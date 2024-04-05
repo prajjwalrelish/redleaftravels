@@ -1,0 +1,158 @@
+{% extends 'base2.html' %}
+{% load myfilter %}
+{% load static %}
+
+{% block css %}
+<style>
+    /* */
+    body {
+        color: #565a5c;
+    }
+
+    .about-us {
+        min-height: 0px;
+    }
+
+    .about-us::before {
+        height: 80px;
+        background: rgb(79 157 211 / 40%);
+    }
+
+    .package-test {
+        margin-top: 12%;
+        margin-bottom: 8%;
+    }
+
+    .flight-card {
+        box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+        padding: 20px;
+        margin: 10px 0;
+        transition: all .5s;
+    }
+
+    .flight-card:hover {
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+    }
+
+
+    .plane {
+        display: flex;
+    }
+
+    .plane img {
+        margin-right: 40px;
+    }
+
+    .plane-info {
+        margin-top: 10px;
+    }
+
+    .about-btn {
+        margin-top: 0;
+    }
+
+    .about-view {
+        border: 1px solid #87b8e3;
+        box-shadow: none;
+    }
+
+    .fa {
+        margin-top: 8px;
+    }
+
+    .mb-3 {
+        margin-bottom: 30px;
+    }
+
+    @media only screen and (max-width:1080px) {
+        .package-test {
+            margin: 30% auto;
+            width: 86%;
+            padding: 6px;
+        }
+    }
+</style>
+{% endblock %}
+
+
+
+{% block body %}
+
+
+<h1>Available flights from {{kwargs.originLocation}} to {{kwargs.destinationLocation}}</h1>
+
+
+{% for flight in flights_data %}
+<div class="row">
+    <div class="col-md-12 col-xs-12 flight-card">
+        <div class="row mb-3">
+            <div class="col-md-2 col-xs-2">
+                <!-- <i class="fa fa-plane" aria-hidden="true"></i> -->
+                <!-- <i class="fa fa-arrow-right" aria-hidden="true"></i> -->
+                <h4>{{flight.carrier}}</h4>
+                <h6></h6>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <div class="col-md-5 col-xs-5 text-center">
+                    <h4>{{kwargs.originLocation}}</h4>
+                    <p>{{flight.info.0.departure_timing}}</p>
+                </div>
+                <div class="col-md-2 col-xs-2 text-center" style="margin-top: -10px;">
+                    <img src="https://img.icons8.com/carbon-copy/35/000000/arrow.png" />
+                    <p>{{flight.duration}}</p>
+
+                </div>
+                <div class="col-md-5 col-xs-5 text-center">
+                    <h4>{{kwargs.destinationLocation}}</h4>
+                    <p>{{flight.arrival_timing}}</p>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                
+                <div class="about-btn d-flex">
+                    <h5>${{flight.total_price}}</h5>
+                    <button class="about-view packages-btn">
+                       <a href="/flights/book/{{flight.id}}/details?{{kwargs|get_encoded_dict}}&amount={{flight.total_price}}">continue</a> 
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+        <hr>
+        
+        <div class="row ">
+            <div class="col-md-2">
+                <div class="about-btn">
+                    <button class="about-view packages-btn">
+                        flight details
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-8">
+                {% for i in flight.info %}
+                <div class="col-md-5  col-xs-5 plane" style="justify-content: flex-end;">
+                    <img src="https://img.icons8.com/plasticine/48/000000/airplane-take-off.png" />
+                    <div class="plane-info">
+                        
+                        <h4>{{i.departure_iata_code}}</h4>
+                        
+                        <p>{{i.departure_timing}}</p>
+                    </div>
+                </div>
+                <div class="col-md-2 col-xs-2 text-center">
+                </div>
+                <div class="col-md-5 col-xs-5 mb-3 plane">
+                    <img src="https://img.icons8.com/plasticine/48/000000/airplane-landing.png" />
+                    <div class="plane-info">
+                        <h4>{{i.arrival_iata_code}}</h4>
+                        <p>{{i.arrival_timing}}</p>
+                    </div>
+                </div>   
+                {% endfor %}       
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+{% endblock %}

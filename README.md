@@ -1,2 +1,1 @@
-# redleaftravels
-A Travel Agency
+Connecting Postgres: https://dev.to/mojemoron/how-to-connect-your-django-app-to-a-dockerized-postgresql-and-pgadmin-133o

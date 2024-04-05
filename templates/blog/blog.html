@@ -1,0 +1,62 @@
+{% load static %}
+<!--blog start-->
+<section id="blog" class="blog">
+	<div class="container">
+		<div class="blog-details">
+			<div class="gallary-header text-center">
+				<h2>
+					latest news
+				</h2>
+				<p>
+					Travel News from all over the world
+				</p>
+			</div>
+			<!--/.gallery-header-->
+			<div class="blog-content">
+				<div class="row">
+					{% for blog in blogs %}
+
+					<div class="col-sm-4 col-md-4">
+						<div class="thumbnail">
+							<h2>trending news <span>{{blog.date}}</span></h2>
+							<div class="thumbnail-img">
+								<img src="/media/{{blog.image}}" alt="blog-img" style="height: 538px;" >
+								<div class="thumbnail-img-overlay"></div>
+								<!--/.thumbnail-img-overlay-->
+
+							</div>
+							<!--/.thumbnail-img-->
+
+							<div class="caption">
+								<div class="blog-txt">
+									<h3>
+										<a href="#">
+											{{blog.title}}
+										</a>
+									</h3>
+									<p>
+										{{blog.description|slice:'0:100'}}....
+									</p>
+									<a href="blog-detail/{{blog.uuid}}">Read More</a>
+								</div>
+								<!--/.blog-txt-->
+							</div>
+							<!--/.caption-->
+						</div>
+						<!--/.thumbnail-->
+
+					</div>
+					<!--/.col-->
+					{% endfor %}
+				</div>
+				<!--/.row-->
+			</div>
+			<!--/.blog-content-->
+		</div>
+		<!--/.blog-details-->
+	</div>
+	<!--/.container-->
+
+</section>
+<!--/.blog-->
+<!--blog end-->

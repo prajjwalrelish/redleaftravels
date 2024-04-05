@@ -1,0 +1,746 @@
+{% load static %}
+{% block css %}
+<style>
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		font: 16px Arial;
+	}
+
+	.autocomplete {
+		/*the container must be positioned relative:*/
+		position: relative;
+		display: inline-block;
+	}
+
+	input {
+		border: 1px solid #d7d7d7;;
+		background-color: #f1f1f1;
+		padding: 10px;
+		font-size: 16px;
+	}
+
+	input[type=text] {
+		background-color: #ffffff;
+		width: 100%;
+	}
+
+	input[type=submit] {
+		background-color: DodgerBlue;
+		color: #fff;
+	}
+
+	.autocomplete-items {
+		position: absolute;
+		border: 1px solid #d4d4d4;
+		border-bottom: none;
+		border-top: none;
+		z-index: 1;
+		/*position the autocomplete items to be the same width as the container:*/
+		top: 100%;
+		left: 0;
+		right: 0;
+	}
+
+	.autocomplete-items div {
+		padding: 10px;
+		cursor: pointer;
+		background-color: #fff;
+		border-bottom: 1px solid #d4d4d4;
+	}
+
+	.autocomplete-items div:hover {
+		/*when hovering an item:*/
+		background-color: #e9e9e9;
+	}
+
+	.autocomplete-active {
+		/*when navigating through the items using the arrow keys:*/
+		background-color: DodgerBlue !important;
+		color: #ffffff;
+	}
+</style>
+{% endblock %}
+{% block booking %}
+<section class="travel-box">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="single-travel-boxes">
+					<div id="desc-tabs" class="desc-tabs">
+
+						<ul class="nav nav-tabs" role="tablist">
+
+							<li role="presentation" class="active">
+								<a href="#tours" aria-controls="tours" role="tab" data-toggle="tab">
+									<i class="fa fa-tree"></i>
+									tours
+								</a>
+							</li>
+
+							<li role="presentation">
+								<a href="#hotels" aria-controls="hotels" role="tab" data-toggle="tab">
+									<i class="fa fa-building"></i>
+									hotels
+								</a>
+							</li>
+
+							<li role="presentation">
+								<a href="#flights" aria-controls="flights" role="tab" data-toggle="tab">
+									<i class="fa fa-plane"></i>
+									flights
+								</a>
+							</li>
+						</ul>
+
+						<!-- Tab panes -->
+						<div class="tab-content">
+							<!-- ........................ ....................tours start ..................................................................... -->
+
+							<div role="tabpanel" class="tab-pane active fade in" id="tours">
+								<form action="{% url 'tour_search' %}" method="POST"> {% csrf_token %}
+									<div class="tab-para">
+										<div class="row">
+											<div class="col-lg-4 col-md-4 col-sm-12">
+												<div class="single-tab-select-box">
+
+													<h2>destination From </h2>
+
+													<div class="travel-select-icon">
+														<select name="from" id="tour_from" class="form-control ">
+
+															<option selected disabled hidden>enter your destination
+																country</option>
+															<!-- /.option-->
+															{% for country in country_list %}
+															<option value="{{country}}">
+																{{country}}</option><!-- /.option-->
+															{% endfor %}
+
+														</select><!-- /.select-->
+													</div><!-- /.travel-select-icon -->
+													<h2>To</h2>
+													<div class="travel-select-icon">
+														<select name="to" id="tour_to" class="form-control ">
+
+															<option selected disabled hidden>enter your destination
+																location</option>
+															<!-- /.option-->
+
+
+
+														</select><!-- /.select-->
+													</div><!-- /.travel-select-icon -->
+
+												</div>
+												<!--/.single-tab-select-box-->
+											</div>
+											<!--/.col-->
+
+											<div class="col-lg-2 col-md-3 col-sm-4">
+												<div class="single-tab-select-box">
+													<h2>check in</h2>
+													<div class="travel-check-icon">
+														<form action="#">
+															<input type="text" name="check_in" class="form-control"
+																data-toggle="datepicker" placeholder="12 -01 - 2017 ">
+														</form>
+													</div><!-- /.travel-check-icon -->
+												</div>
+												<!--/.single-tab-select-box-->
+											</div>
+											<!--/.col-->
+
+											<div class="col-lg-2 col-md-3 col-sm-4">
+												<div class="single-tab-select-box">
+													<h2>check out</h2>
+													<div class="travel-check-icon">
+														<form action="#">
+															<input type="text" name="check_out" class="form-control"
+																data-toggle="datepicker" placeholder="22 -01 - 2017 ">
+														</form>
+													</div><!-- /.travel-check-icon -->
+												</div>
+												<!--/.single-tab-select-box-->
+											</div>
+											<!--/.col-->
+
+											<div class="col-lg-2 col-md-1 col-sm-4">
+												<div class="single-tab-select-box">
+													<h2>duration</h2>
+													<div class="travel-select-icon">
+														<select class="form-control ">
+
+															<option value="default">5</option><!-- /.option-->
+
+															<option value="10">10</option><!-- /.option-->
+
+															<option value="15">15</option><!-- /.option-->
+															<option value="20">20</option><!-- /.option-->
+
+														</select><!-- /.select-->
+													</div><!-- /.travel-select-icon -->
+												</div>
+												<!--/.single-tab-select-box-->
+											</div>
+											<!--/.col-->
+
+											<div class="col-lg-2 col-md-1 col-sm-4">
+												<div class="single-tab-select-box">
+													<h2>members</h2>
+													<div class="travel-select-icon">
+														<select class="form-control ">
+
+															<option value="default">1</option><!-- /.option-->
+
+															<option value="2">2</option><!-- /.option-->
+
+															<option value="4">4</option><!-- /.option-->
+															<option value="8">8</option><!-- /.option-->
+
+														</select><!-- /.select-->
+													</div><!-- /.travel-select-icon -->
+												</div>
+												<!--/.single-tab-select-box-->
+											</div>
+											<!--/.col-->
+
+										</div>
+										<!--/.row-->
+
+										<div class="row">
+											<div class="col-sm-5">
+												<div class="travel-budget">
+													<div class="row">
+														<div class="col-md-3 col-sm-4">
+															<h3>budget : </h3>
+														</div>
+														<!--/.col-->
+														<div class="co-md-9 col-sm-8">
+															<div class="travel-filter">
+																<div class="info_widget">
+																	<div class="price_filter">
+
+																		<div id="slider-range"></div>
+																		<!--/.slider-range-->
+
+																		<div class="price_slider_amount">
+																			<input type="text" id="amount" name="price"
+																				placeholder="Add Your Price" />
+																		</div>
+																		<!--/.price_slider_amount-->
+																	</div>
+																	<!--/.price-filter-->
+																</div>
+																<!--/.info_widget-->
+															</div>
+															<!--/.travel-filter-->
+														</div>
+														<!--/.col-->
+													</div>
+													<!--/.row-->
+												</div>
+												<!--/.travel-budget-->
+											</div>
+											<!--/.col-->
+											<div class="clo-sm-7">
+												<div class="about-btn travel-mrt-0 pull-right">
+													<button class="about-view travel-btn " type="submit">
+														search
+													</button>
+													<!--/.travel-btn-->
+												</div>
+												<!--/.about-btn-->
+											</div>
+											<!--/.col-->
+
+										</div>
+										<!--/.row-->
+
+									</div>
+									<!--/.tab-para-->
+								</form>
+
+							</div>
+							<!--/.tabpannel-->
+
+							<!-- ........................ ....................tours end ..................................................................... -->
+
+
+							<div role="tabpanel" class="tab-pane fade in" id="hotels">
+								<div class="tab-para">
+
+									<div class="row">
+										<div class="col-lg-4 col-md-4 col-sm-12">
+											<div class="single-tab-select-box">
+
+												<h2>destination</h2>
+
+												<div class="travel-select-icon">
+													<select class="form-control ">
+
+														<option value="default">enter your destination country</option>
+														<!-- /.option-->
+
+														<option value="turkey">turkey</option><!-- /.option-->
+
+														<option value="russia">russia</option><!-- /.option-->
+														<option value="egept">egypt</option><!-- /.option-->
+
+													</select><!-- /.select-->
+												</div><!-- /.travel-select-icon -->
+
+												<div class="travel-select-icon">
+													<select class="form-control ">
+
+														<option value="default">enter your destination location</option>
+														<!-- /.option-->
+
+														<option value="istambul">istambul</option><!-- /.option-->
+
+														<option value="mosko">mosko</option><!-- /.option-->
+														<option value="cairo">cairo</option><!-- /.option-->
+
+													</select><!-- /.select-->
+												</div><!-- /.travel-select-icon -->
+
+											</div>
+											<!--/.single-tab-select-box-->
+										</div>
+										<!--/.col-->
+
+										<div class="col-lg-2 col-md-3 col-sm-4">
+											<div class="single-tab-select-box">
+												<h2>check in</h2>
+												<div class="travel-check-icon">
+													<form action="#">
+														<input type="text" name="check_in" class="form-control"
+															data-toggle="datepicker" placeholder="12 -01 - 2017 ">
+													</form>
+												</div><!-- /.travel-check-icon -->
+											</div>
+											<!--/.single-tab-select-box-->
+										</div>
+										<!--/.col-->
+
+										<div class="col-lg-2 col-md-3 col-sm-4">
+											<div class="single-tab-select-box">
+												<h2>check out</h2>
+												<div class="travel-check-icon">
+													<form action="#">
+														<input type="text" name="check_out" class="form-control"
+															data-toggle="datepicker" placeholder="22 -01 - 2017 ">
+													</form>
+												</div><!-- /.travel-check-icon -->
+											</div>
+											<!--/.single-tab-select-box-->
+										</div>
+										<!--/.col-->
+
+										<div class="col-lg-2 col-md-1 col-sm-4">
+											<div class="single-tab-select-box">
+												<h2>duration</h2>
+												<div class="travel-select-icon">
+													<select class="form-control ">
+
+														<option value="default">5</option><!-- /.option-->
+
+														<option value="10">10</option><!-- /.option-->
+
+														<option value="15">15</option><!-- /.option-->
+														<option value="20">20</option><!-- /.option-->
+
+													</select><!-- /.select-->
+												</div><!-- /.travel-select-icon -->
+											</div>
+											<!--/.single-tab-select-box-->
+										</div>
+										<!--/.col-->
+
+										<div class="col-lg-2 col-md-1 col-sm-4">
+											<div class="single-tab-select-box">
+												<h2>members</h2>
+												<div class="travel-select-icon">
+													<select class="form-control ">
+
+														<option value="default">1</option><!-- /.option-->
+
+														<option value="2">2</option><!-- /.option-->
+
+														<option value="4">4</option><!-- /.option-->
+														<option value="8">8</option><!-- /.option-->
+
+													</select><!-- /.select-->
+												</div><!-- /.travel-select-icon -->
+											</div>
+											<!--/.single-tab-select-box-->
+										</div>
+										<!--/.col-->
+
+									</div>
+									<!--/.row-->
+
+									<div class="row">
+										<div class="col-sm-5"></div>
+										<!--/.col-->
+										<div class="clo-sm-7">
+											<div class="about-btn travel-mrt-0 pull-right">
+												<button class="about-view travel-btn">
+													search
+												</button>
+												<!--/.travel-btn-->
+											</div>
+											<!--/.about-btn-->
+										</div>
+										<!--/.col-->
+
+									</div>
+									<!--/.row-->
+
+								</div>
+								<!--/.tab-para-->
+
+							</div>
+							<!--/.tabpannel-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+							<!--..........................flight section .......................................... -->
+
+							<div role="tabpanel" class="tab-pane fade in" id="flights">
+								<div class="tab-para">
+									<form action="{% url 'flight_search' %}" method="POST"> {% csrf_token %}
+										<!-- <div class="trip-circle">
+											<div class="single-trip-circle">
+												<input type="radio" id="radio01" name="roundtrip" />
+												<label for="radio01">
+													<span class="round-boarder">
+														<span class="round-boarder1"></span>
+													</span>round trip
+												</label>
+											</div> -->
+										<!--/.single-trip-circle-->
+										<!-- <div class="single-trip-circle">
+												<input type="radio" id="radio02" name="oneway" />
+												<label for="radio02">
+													<span class="round-boarder">
+														<span class="round-boarder1"></span>
+													</span>one way
+												</label>
+											</div> -->
+										<!--/.single-trip-circle-->
+										<!-- </div> -->
+										<!--/.trip-circle-->
+										<div class="row">
+											<div class="col-lg-4 col-md-4 col-sm-12">
+												<div class="single-tab-select-box">
+
+													<h2>from</h2>
+
+													<div class="travel-select-icon">
+														<div class="autocomplete" style="width:300px;">
+															<input id="origin" type="text" name="origin" placeholder="enter city name">
+														</div>													
+													</div><!-- /.travel-select-icon -->
+												</div>
+												<!--/.single-tab-select-box-->
+											</div>
+											<!--/.col-->
+
+											<div class="col-lg-2 col-md-3 col-sm-4">
+												<div class="single-tab-select-box">
+													<h2>departure</h2>
+													<div class="travel-check-icon">
+														<form action="#">
+															<input type="date" name="departure" class="form-control"
+																min="2021-11-10" id="departure"
+																placeholder="12 -01 - 2017 ">
+														</form>
+													</div><!-- /.travel-check-icon -->
+												</div>
+												<!--/.single-tab-select-box-->
+											</div>
+											<!--/.col-->
+
+											<div class="col-lg-2 col-md-3 col-sm-4">
+												<div class="single-tab-select-box">
+													<h2>return</h2>
+													<div class="travel-check-icon">
+														<form action="#">
+															<input type="date" name="return_date" class="form-control"
+																id='return' placeholder="22 -01 - 2017 ">
+														</form>
+													</div><!-- /.travel-check-icon -->
+												</div>
+												<!--/.single-tab-select-box-->
+											</div>
+											<!--/.col-->
+
+											<div class="col-lg-2 col-md-1 col-sm-4">
+												<div class="single-tab-select-box">
+													<h2>adults</h2>
+													<div class="travel-select-icon">
+														<select class="form-control " name="adults">
+															<option value="1">1</option>
+															<option value="5">5</option><!-- /.option-->
+
+															<option value="10">10</option><!-- /.option-->
+
+															<option value="15">15</option><!-- /.option-->
+															<option value="20">20</option><!-- /.option-->
+
+														</select><!-- /.select-->
+													</div><!-- /.travel-select-icon -->
+												</div>
+												<!--/.single-tab-select-box-->
+											</div>
+											<!--/.col-->
+
+											<div class="col-lg-2 col-md-1 col-sm-4">
+												<div class="single-tab-select-box">
+													<h2>childs</h2>
+													<div class="travel-select-icon">
+														<select class="form-control " name="childs">
+
+															<option value="1">1</option><!-- /.option-->
+
+															<option value="2">2</option><!-- /.option-->
+
+															<option value="4">4</option><!-- /.option-->
+															<option value="8">8</option><!-- /.option-->
+
+														</select><!-- /.select-->
+													</div><!-- /.travel-select-icon -->
+												</div>
+												<!--/.single-tab-select-box-->
+											</div>
+											<!--/.col-->
+
+
+											<div class="col-lg-4 col-md-4 col-sm-12">
+												<div class="single-tab-select-box">
+
+													<h2>to</h2>
+
+													<div class="travel-select-icon">
+														<div class="autocomplete" style="width:300px;">
+															<input id="destination" type="text" name="destination" placeholder="enter city name">
+														</div>		
+
+													</div><!-- /.travel-select-icon -->
+
+												</div>
+												<!--/.single-tab-select-box-->
+											</div>
+											<!--/.col-->
+											<div class="col-lg-3 col-md-3 col-sm-4">
+												<div class="single-tab-select-box">
+
+													<h2>class</h2>
+													<div class="travel-select-icon">
+														<select class="form-control " name="class">
+
+															<option selected disabled hidden>enter class</option>
+															<!-- /.option-->
+
+															<option value="A">A</option><!-- /.option-->
+
+															<option value="B">B</option><!-- /.option-->
+															<option value="C">C</option><!-- /.option-->
+
+														</select><!-- /.select-->
+													</div><!-- /.travel-select-icon -->
+												</div>
+												<!--/.single-tab-select-box-->
+											</div>
+											<!--/.col-->
+											<div class="clo-sm-5">
+												<div class="about-btn pull-right">
+													<button class="about-view travel-btn" type="submit">
+														search
+													</button>
+													<!--/.travel-btn-->
+												</div>
+												<!--/.about-btn-->
+											</div>
+											<!--/.col-->
+
+										</div>
+										<!--/.row-->
+									</form>
+								</div> <!-- .tab-para-->
+
+							</div>
+							<!--/.tabpannel-->
+
+						</div>
+						<!--/.tab content-->
+					</div>
+					<!--/.desc-tabs-->
+				</div>
+				<!--/.single-travel-box-->
+			</div>
+			<!--/.col-->
+		</div>
+		<!--/.row-->
+	</div>
+	<!--/.container-->
+
+</section>
+<!--/.travel-box-->
+<!--travel-box end-->
+
+
+{% endblock %}
+
+{% block js %}
+<script>
+	// set today as minimum for departure date in flight book section
+	var today = new Date();
+	var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+	var departure = document.getElementById('departure').min = date;
+	var return_date = document.getElementById('return').min = date;
+
+	//  add an event listner in tour from section
+	var tour_from = document.getElementById('tour_from').onchange = changeValue;
+	function changeValue() {
+		//  in tour from section get user selected value  
+		let from_value = this.value;
+		//  making an ajax call 
+		$.ajax({
+			type: 'POST',
+			url: '{% url "home" %}',
+			data: { 'value': from_value },
+
+			success: function (data) {
+				let values = data['values']
+				let str = '';
+				for (const value of values) {
+					str += `<option value="${value}">` + value + '</option>'
+				}
+				document.getElementById('tour_to').innerHTML = str;
+			}
+		});
+	}
+
+	
+
+
+	var countries = ["Aalborg", "Aarhus", "Abadan", "Abakan", "Aberdeen", "Aberdeen", "Abha", "Abidjan", "Abilene", "Abu Dhabi", "Abuja", "Acapulco", "Acarigua", "Accra", "Adak Island", "Adana", "Addis Ababa", "Adelaide", "Aden", "Adler", "Agadir", "Aguascaliente", "Ahmedabad", "Ajaccio", "Akiachak", "Akiak", "Akita", "Akron/Canton", "Al-Baha", "Albany", "Albany", "Albert Bay", "Albuquerque", "Aleandroupolis", "Aleppo", "Alexandria", "Al-Fujairah", "Algiers", "Alicante", "Allakaket", "Allentown", "Alma Ata", "Alor Setar", "Altoona", "Amarillo", "Amchitka", "Amman", "Amritsar", "Amsterdam", "Airport", "Anchorage", "Field", "Ancona", "Andahuaylas", "Anguilla", "Aniak", "Ankang", "Ankara", "Ankara, Esenboga", "Annecy", "Antalya", "Antananarivo", "Antigua", "Antofagasta", "Antwerp", "Anvik", "Aomori", "Apia", "Appleton", "Aqaba", "Arcata, Eureka", "Arctic Village", "Arecibo", "Arequipa", "Arica", "Aruba", "Ascension", "Asheville", "Ashikawa", "Ashland, Huntington", "Asmara", "Asturias", "Asuncion", "Aswan", "Athens", "Atlanta", "Atlanta, Beaver Ruin", "Atlanta, Perimeter", "Atlantic City", "Field", "Atmautluak", "Auckland", "Augusta", "Austin", "Ayacucho", "Baghdad, Al Muthana", "International", "Bahrain", "Bakersfield", "Bali Island, Denpasar", "Balmaceda", "Baltimore", "Baltimore, Gl. Martin", "Bamako", "Bandar Abbas", "Bandar Seri Bagawan BWN", "Bangalore", "Bangkok", "Bangor", "Bangui", "Banjul", "Baotou", "Barbados", "Barcelona", "Barcelona", "Bardufoss", "Bari", "Barinas", "Barquisimeto", "Barranquilla", "Barrow", "Basle", "Basra", "Bastia", "Bastia, Biak", "Baton Rouge", "Battle Creek", "Bay City/Saginaw", "Beaumont", "Beaver", "Beef Island, Tortola", "Beijing", "Beijing", "Airport", "Beira", "Beirut", "Belem", "Belfast", "Belfast, Belfast City", "Belgrade", "Belize", "Belize, Municipal", "Bellingham", "Belo Horizonte", "Benghazi", "Bergen", "Berlin", "Berlin, Schonefeld", "Berlin, Tegel", "Berlin, Tempelhof", "Bermuda", "Bern", "Bethel", "Bettles", "Biak", "Biarritz", "Bilbao", "Billings", "Billund", "Binghamton", "Bintulu", "Birmingham", "Birmingham", "Bissau", "Blantyre", "Bloemfontein", "Bloomington", "Boa Vista", "Bodo", "Bogota", "Boise", "Bologna", "Bombay", "Bonaire", "Bordeaux", "Boston", "Boulder", "Bourlamaq/Val Dâ€™or", "Bournemouth", "Bozeman", "Bradley", "Brainerd", "Brasilia", "Bratislava", "Brazzaville", "Bremen", "Brest", "Bridgeport", "Brisbane", "Bristol", "Brownsville", "Brussels", "Bucaramanga", "Bucharest", "Bucharest, Baneasa", "Bucharest, Otopeni", "Budapest", "Buenos Aires", "Newbery", "Ministro Pistarini", "Bujumbura", "Bulawayo", "Bundaberg, Blanding", "Burbank", "Burlington", "Bushehr", "Butte", "Cairns", "Cairo", "Cajamarca", "Calama", "Calcutta", "Calgary", "Cali", "Calicut", "Calvi", "Cambridge Bay", "Campo Grande", "Canaima", "Cancun", "Cape Girardeau", "Cape Town", "Caracas", "Cardiff", "Carlsbad", "Cartagena", "Carupano", "Casablanca", "Casablanca, Anfa", "Mohamed V", "Casper", "Catania", "Cayenne", "Cebu", "Cedar City", "City", "Chachapoyas", "Chalkyits", "Champaign", "Changchun", "Changsha", "Charleston", "Charlotte", "Chattanooga", "Chefornak", "Cheju", "Chengdu", "Chetumal", "Chevak", "Chiang Mai", "Chicago", "Meigs", "Chicago, Midway", "Chicago, Oâ€™Hare", "Chichenitza", "Chiclayo", "Chico", "Chignik", "Chihuahua", "Chisholm", "Chittagong", "Chongqing", "Christchurch", "Chuathbaluk", "Cincinnati", "Ciudad Del Carmen", "Cleveland", "Lakefront", "Cochabamba", "Cochin", "Coeur Dâ€™Alene", "Cold Bay", "Colima", "College Station", "Cologne", "Colombo", "Colorado Springs", "Columbia", "Columbia", "Columbus", "Columbus", "Columbus", "Conakry", "Concepcion", "Copenhagen", "Roskilde", "Copiapo", "Cordova", "Cork", "Corning, Elmira", "Coro", "Corpus Christie", "Cabaniss Field", "Cuddihy Field", "Cotonou", "Coyhaique", "Cozumel", "Crokked Creek", "Cruzeiro Do Sul", "Cuenca", "Cuiaba", "Culebra", "Culiacan", "Cumana", "Curacao", "Curitiba", "Cusco", "Dakar", "Dalaman", "Dalian", "Dallas, Love Field", "Dallas/Ft. Worth", "Damascus", "Danville", "Dar Es Salaam", "Darwin", "Davao", "Dayton", "Daytona Beach", "Decatur", "Deer Lake", "Delhi", "Delta", "Denver", "Des Moines", "Detroit", "Detroit", "Detroit", "Detroit City", "Detroit City", "Detroit, Willow Run", "Detroit, Willow Run", "Dhahran", "Dhahran", "Dhaka", "Dillingham", "Djerba", "Djibouti", "Doha", "Dominica, Cane Field", "Hall", "Dothan", "Douala", "Dresden", "Dubai", "Dublin", "Duluth", "Durango", "Durango", "Durban", "Dusseldorf", "Dutch Harbor", "East London", "East Midlands", "Easter Island", "Edinburgh", "Edmonton", "Edmonton, Albert Intâ€™l", "Edmonton, Municipal", "Field", "Eek", "Eglin Afb/Valparaiso", "Eindhoven", "El Paso", "El Salvador", "Elat", "Elko", "Ely", "Enschede", "Entebbe", "Ercan", "Erevan", "Erfurt", "Erie", "Eugene", "Evansville", "Evenes", "Exeter", "Fairbanks", "Bedford", "False Pass", "Fargo", "Faro", "Fayetteville", "Fayetteville", "Fez", "Fillmore", "Flagstaff", "Flint", "Florence", "Florence", "Flores", "Fort Chima", "Fort Myers", "Fort Nelson", "Fort St. John", "Fortaleza", "Frankfurt", "Fredericton", "Freeport", "Freetown", "Freetown, Hastings", "Fresno", "Friedrichshafen", "Ft de France", "Ft Pierce", "Ft Simpson", "Ft Smith", "Ft Wayne", "Ft Yukon", "Fukuoka", "Funchal", "Fuzhou", "Gainesvile", "Galena", "Garoua", "Gassim", "Gauhati", "Gemena", "Geneva", "Genoa", "Longview", "Glasgow", "Glasgow, Prestwick", "Goma", "Goodnew Bay", "Goose Bay", "Goroka", "Gothenburg", "Gran Canaria", "Grand Cayman", "Grand Fork", "Grand Rapids", "Grand Turk", "Grande Prairie", "Grayling", "Graz", "Great Falls", "Green Bay", "Greensboro", "Greenville", "Greenville", "Greenville", "Grenada", "Grenoble", "Groningen", "Guadalajara", "Guam", "Guangzhou", "Guatemala City", "Guayaquil", "Guernsey", "Guilin", "Guiyang", "Gulfport", "Gunnison", "Hagen", "Haikou", "Hail", "Hakodate", "Halifax", "Hall Beach", "Hamburg", "Hamilton", "Williamsburg", "Hangzhou", "Hanoi", "Hanover", "Harare", "Harbin", "Harlingen", "Harrisburg", "Hartford", "Hartford, Barnes", "Hartford, Bradford", "Hat Yai", "Haugesund", "Havana", "Hay River", "Hefei", "Helena", "Helsingborg", "Helsinki", "Heraklion", "Hermosillo", "Hilo", "Hiroshima", "Ho Chi Minh City", "Hohhot", "Holy Cross", "Homer", "Hong Kong", "Honolulu", "Hoolehua", "Hooper Bay", "Hoskins", "Houston", "Houston, Hull Field", "Intercontinental", "Hughes", "Humberside", "Huntsville", "Huslia", "Hyannis", "Hyderabad", "Iguassu Falls", "Iliamna", "Indianapolis", "Innsbruck", "Inuvik", "Ipoh", "Iqaluit", "Iquique", "Iron Mountain", "Isfahan", "Isiro", "Islamabad", "Maryâ€™s", "Isles of Scil, Tresco", "Macarthur", "Istanbul", "Ithaca", "Ivanoff Bay", "Izmir", "Menderes", "Izmir, Cigli Military", "Jackson", "Jackson", "Jacksonville", "Jaipur", "Jakarta", "Jakarta", "Perdana Kusuma", "Janesville", "Jeddah", "Jersey", "Jinan", "Johannesburg", "Johnston Island", "Johor Bahru", "Jonkoping", "Juanjui", "Juba", "Juliaca", "Juneau", "Kabul", "Kaduna", "Kagoshima", "Kahului", "Kailua", "Kalamazoo", "Kalispell", "Kalskag", "Kaltag", "Kanab", "Kananga", "Kano", "Kansas City", "International", "Kaohsiung", "Karachi", "Karaganda", "Karup", "Kasigluk", "Kassel", "Kathmandu", "Kauai Is", "Kenai", "Kerman", "Ketchikan", "Khabarovsk", "Kiev", "Kiev, Borispol", "Kigali", "Kilimanjaro", "Killeen", "Kimberley", "Kindu", "King Cover", "King Salm", "Kingston", "Kingston, Tinson", "Kinshasa", "Kipnuk", "Kiruna", "Kisangani", "Klagenfurt", "Knoxville", "Kochi", "Kodiak", "Komatsu", "Kongiganak", "Koror", "Kosrae", "Kota Kinabalu", "Kotzebue", "Koyukuk", "Krasnoyarsk", "Kristiansand", "Kuala Lumpur", "Kuching", "Kumamoto", "Kunming", "Kuopio", "Kushiro", "Kuujjuarap", "Kuwait", "Kwajalein", "Kwangju", "Kwethluk", "Kwigillingok", "La Ceiba", "La Crosse", "La Grande", "La Paz", "La Paz Mex", "Labuan", "Lae", "Lafayette", "Lagos", "Ana", "Lahad Datu", "Lahore", "Lake Charles", "Lanai City", "Langkawi", "Lansing", "Lanzhou", "Laredo", "Larnaca", "Las Piedras", "Las Vegas", "Terminal", "Launceston", "Lawton", "Le Havre", "Leeds", "Leinster", "Leipzig", "Lethbridge", "Lhasa", "Libreville", "Liege", "Lille", "Lilongwe", "Lima", "Limoges", "Lincoln", "Linz", "Lisbon", "Little Rock", "Liverpool", "Livingstone", "Ljubljana", "Lobito", "Lome", "London", "London", "London, City Airport", "London, Gatwick", "London, Heathrow", "London, Luton", "London, Stansted", "Long Beach", "Loreto", "Los Angeles", "Los Angeles", "Los Mochis", "Louisville", "Lourdes/Tarbes", "Luanda", "Lubbock", "Lubumbashi", "Lucknow", "Ludwigshafen", "Lugano", "Lulea", "Lumid Pau", "Lusaka", "Luxembourg", "Luxor", "Lyon", "Maastricht", "Macon", "Madison", "Madras", "Madrid", "Magadan", "Mahe Island", "Maiduguri", "Majuro", "Malaga", "Male", "Malmo", "Malongo", "Malta", "Manado", "Managua", "Manaus", "Manchester", "Manchester", "Manila", "Manzanillo", "Maputo", "Maracaibo", "Maribor", "Marietta, Parkersburg", "Marion", "Marquette", "Marrakech", "Marseille", "Marshall", "Marthaâ€™s Vineyard", "Mashad", "Matamoros", "Matsuyama", "Maturin", "Mauritius", "Mayaguez", "Mazatlan", "Mbandaka", "Mbuji Mayi", "Mc Allen", "Mc Grath", "Medan", "Medellin", "Medford", "Medina", "Meekatharp", "Mekoryuk", "Melbourne", "Melbourne", "Heliport", "Melbourne, Essendon MEB", "Memphis", "Mendoza", "Merida", "Merida", "Meridian", "Mexico City", "Miami", "Heliport", "Base", "Midland", "Milan", "Milan, Linate", "Milan, Malpensa", "Milan, Orio al Serio", "Milan, Segrate", "Milford", "Milwaukee", "Minatitlan", "Mineralnye", "Minneapolis", "Minot", "Minsk", "Miri", "Missoula", "Miyazaki", "Mobile", "Moline", "Mombasa", "Moncton", "Monroe", "Monrovia", "International", "Montego Bay", "Monterrey", "Montevideo", "Montgomery", "Montpellier", "Montreal", "International", "International", "Morelia", "Moroni", "International", "Moscow", "Domodedovo", "Sheremetyevo", "Moscow, Vnukovo", "Mount Hagen", "Muenster", "Mulhouse", "Munich", "Muscat", "Muskegon", "Myrtle Beach", "Nâ€™djamena", "Nadi", "Nagasaki", "Nagoya", "Nairobi", "Nairobi", "Nanchang", "Nancy", "Nanisivik", "Nanjing", "Nanning", "Nantes", "Nantucket", "Napakiak", "Napaskiak", "Naples", "Naples", "Nashville", "Nassau", "Natal", "Neuchatel", "New Bern", "New Orleans", "New York", "Kennedy", "New York, La Guardia LGA", "New York, Newark", "Newburgh", "Newcastle", "Newtok", "Niagara Falls", "Niamey", "Nice", "Nightmute", "Niigata", "Nimes", "Ningbo", "Nis", "Nome", "Norfolk", "Norilsk", "Norman Wells", "Norrkoping", "Norwich", "Nouakchott", "Noumea", "Noumea, Magenta", "Novosibirsk", "Nuevo Laredo", "Nulato", "Nunapitchuk", "Nuremberg", "Oakland", "Oaxaca", "Oita", "Okayama", "Okinawa", "Oklahoma City", "Omaha", "Ontario", "Oran", "Orebro", "Orlando", "Osaka", "Osaka, Itami", "International", "Oshkosh", "Osijek", "Oslo", "Oslo, Fornebu Airport", "Oslo, Gardermoen", "Osorno", "Ostend", "Ottawa", "Ouagadougou", "Oxnard/Ventura", "Pago Pago", "Palembang", "Palermo", "Palm Springs", "Palma de Mallorca", "Panama City ( FL. )", "Panama City", "Panama City, Paitilla", "Papeete", "Paphos", "Paramaribo", "Hoop", "Paris", "Paris, Charles de Gaulle", "Paris, Le Bourget", "Paris, Orly", "Pasco", "Pau", "Penang", "Pensacola", "Peoria", "Pereira", "Perpignan", "Perryville", "Perth", "Pescara", "Peshawar", "Petersburg", "Philadelphia", "Philadelphia, North", "Phnom Penh", "Phoenix", "Municipal", "Phuket", "Pierre", "Pisa", "Pittsburgh", "Piura", "Platinum", "Plymouth", "Pocatello", "Pohnpei", "Point Ã  Pitre", "Pointe Noire", "Ponce", "Ponta Delgada", "Pori", "Porlamar", "Port au Prince", "Port Elizabeth", "Port Gentil", "Port Graham", "Port Harcourt", "Port Hedland", "Port Heiden", "Port Moresby", "Port of Spain, Trinidad", "Port Velho", "Port Vila", "Portland", "Portland", "Porto", "Porto Alegre", "Prague", "Presque Isle", "Prince George", "Prince Rupert", "Providence", "Providenciales", "Deadhorse", "Pucallpa", "Puebla", "Puerto Ayachucho", "Puerto Cabello", "Puerto Escondido", "Puerto Maldonado", "Puerto Montt", "Puerto Ordaz", "Puerto Plata", "Puerto Vallarta", "Punta Arenas", "Pusan", "Pyongyang", "Qingdao", "Quebec", "Quetta", "Quinhagak", "Quito", "Rabat", "Rabaul", "Raleigh/Durham", "Rangoon/Yangon", "Rapid City", "Rarotonga", "Recife", "Red Devil", "Redding", "Regina", "Reno", "Resolute", "Reykjavik", "Richmond", "Riga", "Riga, Skulte", "Rimini", "Rio de Janeiro", "Internacional", "Dumont", "Rio Gallegos", "Rioja", "Riyadh", "Roanoke", "Roatan", "Rochester", "Rochester", "Rockford", "Rocky Mount/Wilson", "Rome", "Rome, Clampino", "Rome, Fiumicino", "Roosevelt", "Roswell", "Rota", "Rotterdam", "Rouen", "Ruby", "Russian Mission", "Saarbruecken", "Sacramento", "Saipan", "Sal", "Salt Lake City", "Saltillo", "Salvador", "Salzburg", "San Andres Island", "San Angelo", "San Antonio", "San Antonio", "San Diego", "San Francisco", "Embarkadero", "San Jose", "San Jose", "San Jose, Los Cabos", "San Juan", "San Juan, Isla Grande", "San Luis Potosi", "San Pedro Sula", "San Salvador", "San Tome", "Sanaa", "Sand Point", "Sandakan", "Santa Barbara", "Santa Cruz", "Santa Cruz", "Santa Maria", "Santiago", "Santiago de Compostela", "Santo Domingo", "Santo Domingo", "Sanya", "Sao Luiz", "Sao Paulo", "Sao Paulo, Congonhas", "Sao Paulo, Guarulhos", "Sao Paulo, Viracopos", "Sao Tome Island", "Sapporo", "Sapporo, Chitose", "Sapporo, Okadama", "Sarasota/ Bradenton", "Sault Ste. Marie", "Savannah", "Scammon Bay", "Scranton, Wilkes-Barre", "Seattle", "Sedona", "Seldovia", "Sendai", "Seoul", "Sepulot", "Seward", "Seville", "Shageluk", "Shanghai", "Shannon", "Shantou/Swatow", "Sharjah", "Shemya Islands", "Shenyang", "Shenzhen", "Lerwick / Tingwall", "Scatsta", "Sumuburgh", "Shijiazhuang", "Shiraz", "Shreveport", "Sibu", "Simferopol", "Singapore", "Singapore, Paya Lebar", "Singapore, Seletar", "Sioux Falls", "Sitka", "Sleetmute", "Sofia", "Sokoto", "Soldotna", "Sonderborg", "Sondre Stromfjord", "South Bend", "Springfield", "Springfield", "St. Denis de La Reunion", "St. George", "St. George Island", "St. Johns", "St. Kitts", "St. Louis", "St. Lucia", "St. Lucia, Hewanorra", "St. Maarten", "St. Maryâ€™s", "St. Petersburg", "St. Thomas", "St. Vincent", "Sta Cruz Huat", "Stavanger", "Steamboat Spring", "Stevens Village", "Stockholm", "Stockholm, Arlanda", "Stockholm, Bromma", "Stockton", "Stony River", "Strasbourg", "Stuttgart", "Sudbury", "Sukhumi", "Sundsvall", "Surabaya", "Suva", "Sverdlovsk, Ekaterinburg SVX", "Sydney", "Syracuse", "Tabriz", "Tabuk", "Tacna", "Taegu, Korea", "Taichung", "Taif", "Taipei", "Taipei, Shung Shan", "Taiyuan", "Takamatsu", "Talara", "Tallahassee", "Tallinn", "Tamanrasset", "Tampa", "Tampere", "Tanana", "Tangier", "Tarapoto", "Tashkent", "Tawau", "Teesside", "Tegucigalpa", "Tehran", "Tel Aviv Yafo, Sde Dov", "Tel Aviv Yafo, Tel Aviv", "Temuco", "Tenerife", "Rodeos", "Sofia", "Terceira", "Terrace", "Texarkana", "Thessaloniki", "Thunder Bay", "Tianjin", "Tijuana", "Timisoara", "Tingo Maria", "Tobago", "Toksook Bay", "Tokushima", "Tokyo", "Tokyo, Haneda", "Tokyo, Narita Airport", "Toledo", "Tongatapu", "Topeka", "Toronto", "Toronto", "Toronto Island", "Torreon", "Tottori", "Toulon/Hyeres", "Toulouse", "Toyama", "Traverse City", "Trenton", "Tri-City", "Trieste", "Tripoli", "Trivandrum", "Trombetas", "Tromso", "Trondheim", "Trujillo", "Truk", "Tucson", "Tulsa", "Tuluksak", "Tumbes", "Tunis", "Tuntutulia", "Tununak", "Turin", "Turku", "Tuscaloosa", "Tuxtla Gutierrez", "Twin Falls", "Tyler", "Ube", "Ukiah", "Ulan Bator", "Umea", "Unalakleet", "Urumqi", "Vaasa", "Wabush", "Waco", "Valdosta", "Valencia", "Valencia", "Valera", "Valladolid", "Vancouver", "Warsaw", "Washington", "International", "Washington, National", "Vasteras", "Watson Lake", "Wausau", "Vaxjo", "Wellington", "Wenatchee", "Venetie", "Venice", "Venice, Treviso", "Veracruz", "Vernal", "Verona", "West Palm Beach", "Westchester", "White River", "Whitehorse", "Wichita", "Wichita Falls", "Victoria", "Vienna", "Vientiane", "Vieques", "Villahermosa", "Wilmington", "Vilnius", "Windhoek", "Windhoek, Eros", "Windsor", "Winnipeg", "Vitoria", "Vladivostok", "Wrangell", "Wuhan", "Xiamen", "Xian", "Yakima", "Yakutat", "Yamagata", "Yantai", "Yap Caroline Island", "Yellowknife", "Yinchuang", "Yurimaguas", "Yuzhno-Sakhalinsk", "Zacatecas", "Zagreb", "Zahedan", "Zanzibar", "Zaragoza", "Zhanjiang", "Zhengzhou", "Zihuatanejo", "Zurich"]
+	
+	function autocomplete(inp, arr) {
+		/*the autocomplete function takes two arguments,
+		the text field element and an array of possible autocompleted values:*/
+		var currentFocus;
+		/*execute a function when someone writes in the text field:*/
+		inp.addEventListener("input", function (e) {
+			var a, b, i, val = this.value;
+			/*close any already open lists of autocompleted values*/
+			closeAllLists();
+			if (!val) { return false; }
+			currentFocus = -1;
+			/*create a DIV element that will contain the items (values):*/
+			a = document.createElement("DIV");
+			a.setAttribute("id", this.id + "autocomplete-list");
+			a.setAttribute("class", "autocomplete-items");
+			/*append the DIV element as a child of the autocomplete container:*/
+			this.parentNode.appendChild(a);
+			/*for each item in the array...*/
+			for (i = 0; i < arr.length; i++) {
+				/*check if the item starts with the same letters as the text field value:*/
+				if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+					/*create a DIV element for each matching element:*/
+					b = document.createElement("DIV");
+					/*make the matching letters bold:*/
+					b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+					b.innerHTML += arr[i].substr(val.length);
+					/*insert a input field that will hold the current array item's value:*/
+					b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+					/*execute a function when someone clicks on the item value (DIV element):*/
+					b.addEventListener("click", function (e) {
+						/*insert the value for the autocomplete text field:*/
+						inp.value = this.getElementsByTagName("input")[0].value;
+						/*close the list of autocompleted values,
+						(or any other open lists of autocompleted values:*/
+						closeAllLists();
+					});
+					a.appendChild(b);
+				}
+			}
+		});
+		/*execute a function presses a key on the keyboard:*/
+		inp.addEventListener("keydown", function (e) {
+			var x = document.getElementById(this.id + "autocomplete-list");
+			if (x) x = x.getElementsByTagName("div");
+			if (e.keyCode == 40) {
+				/*If the arrow DOWN key is pressed,
+				increase the currentFocus variable:*/
+				currentFocus++;
+				/*and and make the current item more visible:*/
+				addActive(x);
+			} else if (e.keyCode == 38) { //up
+				/*If the arrow UP key is pressed,
+				decrease the currentFocus variable:*/
+				currentFocus--;
+				/*and and make the current item more visible:*/
+				addActive(x);
+			} else if (e.keyCode == 13) {
+				/*If the ENTER key is pressed, prevent the form from being submitted,*/
+				e.preventDefault();
+				if (currentFocus > -1) {
+					/*and simulate a click on the "active" item:*/
+					if (x) x[currentFocus].click();
+				}
+			}
+		});
+		function addActive(x) {
+			/*a function to classify an item as "active":*/
+			if (!x) return false;
+			/*start by removing the "active" class on all items:*/
+			removeActive(x);
+			if (currentFocus >= x.length) currentFocus = 0;
+			if (currentFocus < 0) currentFocus = (x.length - 1);
+			/*add class "autocomplete-active":*/
+			x[currentFocus].classList.add("autocomplete-active");
+		}
+		function removeActive(x) {
+			/*a function to remove the "active" class from all autocomplete items:*/
+			for (var i = 0; i < x.length; i++) {
+				x[i].classList.remove("autocomplete-active");
+			}
+		}
+		function closeAllLists(elmnt) {
+			/*close all autocomplete lists in the document,
+			except the one passed as an argument:*/
+			var x = document.getElementsByClassName("autocomplete-items");
+			for (var i = 0; i < x.length; i++) {
+				if (elmnt != x[i] && elmnt != inp) {
+					x[i].parentNode.removeChild(x[i]);
+				}
+			}
+		}
+		/*execute a function when someone clicks in the document:*/
+		document.addEventListener("click", function (e) {
+			closeAllLists(e.target);
+		});
+	}
+	autocomplete(document.getElementById("origin"), countries);
+	autocomplete(document.getElementById("destination"), countries);
+
+
+</script>
+{% endblock %}

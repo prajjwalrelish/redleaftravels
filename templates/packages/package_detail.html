@@ -1,0 +1,133 @@
+{% extends 'base2.html' %}
+{% load myfilter %}
+{% load static %}
+{% block css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
+<style>
+    body {
+        /* font-family: 'Poppins', sans-serif; */
+        font-family: 'Quicksand', sans-serif;
+    }
+
+    .about-us {
+        min-height: 0px;
+    }
+
+    .about-us::before {
+        height: 80px;
+        background: rgb(79 157 211 / 40%);
+    }
+
+    .package-test {
+        margin-top: 12%;
+        margin-bottom: 8%;
+        box-shadow: 0 0 15px rgb(0 0 0 / 10%);
+        padding: 29px;
+    }
+
+    .package-img {
+        width: 24.3333%;
+    }
+
+    .book-btn a {
+        color: white;
+    }
+
+    .mb-1 {
+        margin-bottom: 5px;
+    }
+
+    .mb-2 {
+        margin-bottom: 10px;
+    }
+
+    .mb-3 {
+        margin-bottom: 15px;
+    }
+
+    hr {
+
+        border-top: 1px solid rgb(255, 255, 255);
+    }
+
+    @media only screen and (max-width:1080px) {
+        .package-test {
+            margin: 30% auto;
+            width: 86%;
+            padding: 6px;
+        }
+        .package-img{
+            width: auto;
+        }
+    }
+</style>
+
+{% endblock %}
+{% block body %}
+{% for package in package %}
+<div class="col-md-4 package-img">
+    <img src="/media/{{package.image}}" alt="photo">
+    <hr>
+</div>
+<div class="col-md-8 mb-3">
+    <div class="col-md-8 col-sm-6 mb-3 packages-review">
+        <h4 class="mb-2">{{package.from_place}} - {{package.to_place}}</h4>
+        <p>
+            {% for i in package.rating|times %}
+            <i class="fa fa-star"></i>
+            {% endfor %}
+        </p>
+    </div>
+    <div class="col-md-4 col-sm-6 mb-3">
+        <h4 class="mb-2">${{package.price}} per person</h4>
+        <h5> <img src="https://img.icons8.com/ultraviolet/20/000000/5-star-hotel.png"/> <span> {{package.no_of_days}} days / {{package.no_of_nights}} nights </span></h5>
+        
+    </div>
+
+    <div class="col-md-12 mb-3">
+        <hr>
+        <h4 class="mb-3">description:</h4>
+        
+        <span>{{package.description}}</span>
+        <hr>
+    </div>
+    <div class="col-md-6 mb-3">
+        <h4 class="mb-2">Transportation <img src="https://img.icons8.com/emoji/24/000000/airplane-emoji.png" /></h4>
+        {% for i in package.transportation %}
+        <span> {{i}} </span>
+        {% endfor %}
+        <hr>
+    </div>
+    <!-- <i class="fa fa-cutlery" aria-hidden="true"></i> -->
+    <div class="col-md-6 mb-3">
+        <h4 class="mb-2">Food Facilities <img src="https://img.icons8.com/office/24/000000/meal.png" /> </h4>
+        {% for i in package.food_facilities %}
+        <span> {{i}} </span>
+        {% endfor %}
+        <hr>
+    </div>
+
+    <div class="col-md-12 mb-3">
+        <h4>Reviews ({{package.reviews}}) :</h4>
+        <hr>
+    </div>
+
+    <div class="col-md-12">
+        <button type="submit" class="book-btn">
+            <a href="/packages/book/{{package.uuid}}">Book Now</a>
+        </button>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block js %}
+<script>
+    // set today as minimum for departure date in flight book section
+    var today = new Date();
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    var departure = document.getElementById('date').min = date;
+</script>
+{% endblock %}

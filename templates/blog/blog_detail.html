@@ -1,0 +1,49 @@
+{% extends 'base2.html' %}
+
+{% block css %}
+<style>
+    .about-us {
+        min-height: 0px;
+    }
+
+    .about-us::before {
+        height: 80px;
+        background: rgb(79 157 211 / 40%);
+    }
+
+    .blog-detail {
+        margin-top: 12%;
+        box-shadow: 0 0 15px rgb(0 0 0 / 10%);
+        padding: 50px;
+    }
+    @media only screen and (max-width:1080px) {
+        .blog-detail{
+            margin:34% auto;
+            padding: 25px;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block body %}
+{% for blog in blog %}
+<div class="container blog-detail" style="margin-bottom: 50px;">
+    <div class="col-md-4">
+        <div>
+            <img src="/media/{{blog.image}}" alt="blogphoto">
+        </div><br>
+        
+    </div>
+    <div class="col-md-8">
+        <h3 >{{blog.title}}</h3>
+        <p>{{blog.date}}  by <a>{{blog.author}}</a></p>
+        <hr>
+        <p>{{blog.description}}</p>
+        <br>
+        
+    </div>
+</div>
+
+{% endfor %}
+{% endblock %}

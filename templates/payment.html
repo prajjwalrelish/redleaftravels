@@ -1,0 +1,129 @@
+{% extends 'base2.html' %}
+{% load myfilter %}
+{% block css %}
+<style>
+    .about-us {
+        min-height: 0px;
+    }
+
+    .about-us::before {
+        height: 80px;
+        background: rgb(79 157 211 / 40%);
+    }
+
+    .package-test {
+        margin-top: 12%;
+        margin-bottom: 8%;
+    }
+
+    .payment {
+        margin: auto;
+        width: 40%;
+        box-shadow: 0 0 15px rgb(0 0 0 / 10%);
+        padding: 29px;
+    }
+</style>
+{% endblock %}
+{% block body %}
+
+<!-- Set up a container element for the button -->
+<div class="payment">
+    <h4>Payment : </h4>
+    <hr>
+    <div class="form-group">
+        <label> Amount : $ <span id="Amount"></span> </label>
+    </div>
+    <br>
+    <div id="paypal-button-container"></div>
+
+    {% block js %}
+    <!-- Include the PayPal JavaScript SDK -->
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=ATcjX6XNqizKR_6NVYg2iOHYYyDoe1xM-M52OflNd8-hDzJ3HGBaLFd3E_yRBK4glaYEE9wdipPZb0rS&currency=USD"></script>
+
+    <script>
+        var traveler_details =JSON.parse( '{{travelerDetails|safe}}' );
+        console.log(traveler_details);
+        console.log(traveler_details['amount'])
+     
+        document.getElementById('Amount').innerHTML = traveler_details['amount'];
+        
+        //  function for generating csrf token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+       
+
+
+        
+        function completeOrder(transaction_id) {
+            var url = `/payment/${traveler_details['type']}/done`;
+            traveler_details['transaction_id'] = transaction_id;
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify(traveler_details)
+            });
+
+        }
+
+
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+            // styling the paypal button
+            style: {
+                color: 'blue',
+                shape: 'pill',
+                label: 'pay',
+                height: 40
+            },
+
+            // Set up the transaction
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: traveler_details['amount']
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (orderData) {
+                    // Successful capture! For demo purposes:
+                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    var transaction = orderData.purchase_units[0].payments.captures[0];
+                    completeOrder(transaction.id);
+                    // alert('Transaction ' + transaction.status + ': ' + transaction.id + '\n\nSee console for all available traveler_details');
+
+
+                    // Replace the above to show a success message within this page, e.g.
+                    const element = document.getElementById('paypal-button-container');
+                    element.innerHTML = '';
+                    element.innerHTML = `<h3>Thank you for your payment!</h3><h4> your transaction id is ${traveler_details['transaction_id']}`;
+                    //or go to another url : actions.redirect('templates/thank_you.html');
+                });
+            }
+        }).render('#paypal-button-container');
+    </script>
+
+    {% endblock %}
+    {% endblock %}

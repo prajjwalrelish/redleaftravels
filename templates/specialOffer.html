@@ -1,0 +1,102 @@
+{% load myfilter %}
+{% load static %}
+
+<!--special-offer start-->
+{% for offer in specialoffer %}
+<section id="spo" class="special-offer">
+	<div class="container">
+		<div class="special-offer-content">
+			<div class="row">
+				<div class="col-sm-8">
+					<div class="single-special-offer">
+						<div class="single-special-offer-txt">
+							<h2>{{offer.package.from_place}} - {{offer.package.to_place}}</h2>
+							<div class="packages-review special-offer-review">
+								<p>
+									{% for i in offer.package.rating|times %}
+									<i class="fa fa-star"></i>
+									{% endfor %}
+									<span>{{offer.package.reviews}} review</span>
+								</p>
+							</div>
+							<!--/.packages-review-->
+							<div class="packages-para special-offer-para">
+								<p>
+									<span>
+										<i class="fa fa-angle-right"></i> {{offer.package.no_of_days}} days {{offer.package.no_of_nights}} nights
+									</span>
+									<span>
+										<i class="fa fa-angle-right"></i> {{offer.person}} person
+									</span>
+									<span>
+										<i class="fa fa-angle-right"></i> {{offer.package.accomodation}} star accomodation
+									</span>
+								</p>
+								<p>
+									<span>
+										<i class="fa fa-angle-right"></i>
+										{% for i in offer.package.transportation %}
+										<span> {{i}} </span>
+										{% endfor %}
+									</span>
+									<span>
+										<i class="fa fa-angle-right"></i>
+										{% for i in offer.package.food_facilities %}
+										<span> {{i}} </span>
+										{% endfor %}
+									</span>
+								</p>
+								<p class="offer-para">
+									{{offer.desc}}
+									
+								</p>
+							</div>
+							<!--/.packages-para-->
+							<div class="offer-btn-group">
+								<div class="about-btn">
+									<button class="about-view packages-btn offfer-btn">
+										make tour
+									</button>
+								</div>
+								<!--/.about-btn-->
+								<div class="about-btn">
+									<button class="about-view packages-btn">
+										book now
+									</button>
+								</div>
+								<!--/.about-btn-->
+							</div>
+							<!--/.offer-btn-group-->
+						</div>
+						<!--/.single-special-offer-txt-->
+					</div>
+					<!--/.single-special-offer-->
+				</div>
+				<!--/.col-->
+				<div class="col-sm-4">
+					<div class="single-special-offer">
+						<div class="single-special-offer-bg">
+							<img src="{% static 'images/offer/offer-shape.png' %}" alt="offer-shape">
+						</div>
+						<!--/.single-special-offer-bg-->
+						<div class="single-special-shape-txt">
+							<h3>special offer</h3>
+							<h4><span>{{offer.discount}}%</span><br>off</h4>
+							<p><span>${{offer.price}}</span><br>reguler $ {{offer.package.price}}</p>
+						</div>
+						<!--/.single-special-shape-txt-->
+					</div>
+					<!--/.single-special-offer-->
+				</div>
+				<!--/.col-->
+			</div>
+			<!--/.row-->
+		</div>
+		<!--/.special-offer-content-->
+	</div>
+	<!--/.container-->
+
+</section>
+<!--/.special-offer end-->
+<!--special-offer end-->
+{% endfor %}

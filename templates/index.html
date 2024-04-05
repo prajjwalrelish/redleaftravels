@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+		
+		{% include 'aboutUs.html' %} 
+		{% comment %} {% block about %} {% endblock %}  {% endcomment %}
+		
+		{% include 'booking.html' %}
+
+        {% include 'service.html' %}
+
+		{% include 'gallery.html' %}
+
+		{% include 'discount.html' %}
+		
+		{% include 'packages/packages.html' %}
+		
+		{% include 'testemonial.html' %}
+		
+		{% include 'specialOffer.html' %}
+		
+		{% include 'blog/blog.html'%}
+
+		{% include 'subscribe.html' %}
+		
+
+		
+
+{% endblock %}

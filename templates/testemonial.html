@@ -1,0 +1,218 @@
+{% load static %}
+<style>
+	/* The Modal (background) */
+	#reviewModal {
+		display: none;
+		z-index: 2;
+
+		/* Hidden by default */
+	}
+
+	.review-modal {
+		
+		position: fixed;
+		/* Stay in place */
+		/* Sit on top */
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		overflow: auto;
+		/* Enable scroll if needed */
+		background-color: rgb(0, 0, 0);
+		/* Fallback color */
+		background-color: rgba(0, 0, 0, 0.4);
+		/* Black w/ opacity */
+	}
+
+	/* Modal Content/Box */
+	.review-modal-content {
+		background-color: white;
+		margin: 10% auto;
+		padding: 20px;
+		border: 1px solid #888;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		width: 35%;
+		height: 700px;
+
+	}
+
+	.form {
+		color: black;
+		margin: 15% auto;
+		width: 85%;
+		font-size: 16px;
+	}
+
+	/* The Close Button */
+	.review-close {
+		color: rgb(179 173 173);
+		float: right;
+		font-size: 28px;
+		font-weight: bold;
+	}
+
+	.review-close:hover,
+	.review-close:focus {
+		color: black;
+		text-decoration: none;
+		cursor: pointer;
+	}
+	.btn-primary {
+        width: 100%;
+        color: #ffffff;
+        background-color: #00d8ff;
+        border-color: #204d74;
+        transition: all .5s;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .btn-primary:hover {
+        color: #00d8ff;
+        background-color: #ffffff;
+        border-color: #204d74;
+    }
+	@media only screen and (max-width:1080px) {
+
+
+		.review-modal-content {
+			margin: 57% auto;
+			width: 70%;
+			height: 233px;
+		}
+
+		.review-modal-content h4 {
+			margin: 37% auto;
+			width: 100%;
+			font-size: 11px;
+		}
+	}
+</style>
+<!-- testemonial Start -->
+<section class="testemonial">
+	<div class="container">
+
+		<div class="gallary-header text-center">
+			<h2>
+				clients reviews
+			</h2>
+			<p>
+				Clients that loved to use our services and always recommending other. "Give Us A Chance To Serve"
+			</p>
+
+		</div>
+		<!--/.gallery-header-->
+
+		<div class="owl-carousel owl-theme" id="testemonial-carousel">
+			{% for review in clientreview %}
+			<div class="home1-testm item">
+				<div class="home1-testm-single text-center">
+					<div class="home1-testm-img">
+						<img src="media/{{review.image}}" alt="img" />
+					</div>
+					<!--/.home1-testm-img-->
+					<div class="home1-testm-txt">
+						<span class="icon section-icon">
+							<i class="fa fa-quote-left" aria-hidden="true"></i>
+						</span>
+						<p style="min-height: 131px;">
+							
+							{{review.review}}
+						</p>
+						<h3>
+							<a href="#">
+								{{review.name}}
+							</a>
+						</h3>
+						<h4>{{review.address}}</h4>
+					</div>
+					<!--/.home1-testm-txt-->
+				</div>
+				<!--/.home1-testm-single-->
+
+			</div>
+			<!--/.item-->
+			{% endfor %}
+		</div>
+		<!--/.testemonial-carousel-->
+		<div class="about-btn" id="reviewBtn">
+			<button class="about-view discount-offer-btn">
+				Give us a review
+			</button>
+		</div>
+		<!--/.about-btn-->
+		<div id="reviewModal" class="review-modal">
+
+			<!-- Modal content -->
+			<div class="review-modal-content">
+				<span class="review-close" id="reviewCloseBtn">&times;</span>
+				<form action="{% url 'client_review' %}" method="POST" class="form" enctype="multipart/form-data"> 
+					{%csrf_token %}
+					<div class="form-group">
+						<label for="name">Name</label>
+						<input name="name" type="text" class="form-control" id="name" aria-describedby="emailHelp"
+							placeholder="Enter name">
+					</div>
+					<div class="form-group">
+						<label for="email">Email address</label>
+						<input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp"
+							placeholder="Enter email">
+					</div>
+					<div class="form-group">
+						<label for="contact">Contact no.</label>
+						<input name="contact" type="number" class="form-control" id="contact"
+							aria-describedby="emailHelp" placeholder="Enter contact number">
+					</div>
+					<div class="form-group">
+						<label for="address">Address</label>
+						<input name="address" type="text" class="form-control" id="address" aria-describedby="emailHelp"
+							placeholder="1234 Main St">
+					</div>
+					<div class="form-group">
+						<label for="image">Image</label>
+						<input name="image" type="file" class="form-control-file" id="image">
+					</div>
+					<div class="form-group">
+						<label for="review">Your review</label>
+						<textarea name="review" class="form-control" id="review" rows="3"></textarea>
+					</div>
+
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+
+			</div>
+
+		</div>
+	</div>
+	<!--/.container-->
+
+</section>
+<!--/.testimonial-->
+<!-- testemonial End -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+	crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+	integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+	crossorigin="anonymous"></script>
+
+<script>
+	var reviewmodal = document.getElementById('reviewModal');
+	let reviewbtn = document.getElementById('reviewBtn');
+	let reviewclosebtn = document.getElementById('reviewCloseBtn');
+	reviewbtn.onclick = function () {
+		reviewmodal.style.display = 'block';
+	}
+	reviewclosebtn.onclick = function () {
+		reviewmodal.style.display = 'none';
+	}
+	// // When the user clicks anywhere outside of the modal, close it
+	window.onclick = function (event) {
+		if (event.target == reviewmodal) {
+			reviewmodal.style.display = "none";
+		}
+	}
+
+
+</script>

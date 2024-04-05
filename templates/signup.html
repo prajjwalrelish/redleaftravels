@@ -1,0 +1,221 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+<!--bootstrap.min.css-->
+{% block css %}
+
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Carter+One&family=Ramabhadra&family=Source+Code+Pro:ital,wght@1,200&display=swap"
+    rel="stylesheet">
+
+<style>
+   .about-us {
+        background: no-repeat center center fixed url('/static/images/account/login.jpg');
+        background-size: cover;
+    }
+
+    .about-us::before {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgb(38 38 38 / 40%);
+    }
+
+
+    .maincont {
+        width: 56%;
+        margin: 80px auto auto auto;
+        padding: 100px 0;
+        position: relative;
+        left: 0;
+        right: 0;
+
+    }
+
+
+    .cont1 {
+        margin: auto;
+        width: 60%;
+        min-height: 390px;
+        
+        background-color: transparent;
+        padding: 5%;
+    }
+
+    .cont1::before {
+        margin-left: 20%;
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        width: 60%;
+        height: 100%;
+        box-shadow: rgb(0, 0, 0)0px 0px 10px;
+        background: rgba(0, 122, 207, .4);
+    }
+
+    .fa {
+        font-size: 2rem;
+    }
+    .input-group,.form-contol{
+        z-index: 1;
+        width: 100%;
+    }
+    .btn-primary{
+        width: 100%;
+        color: #ffffff;
+    background-color: #00d8ff;
+    border-color: #204d74;
+    transition: all .5s;
+    padding: 10px;
+    font-size: 16px;
+    }
+    .btn-primary:hover{
+        color: #00d8ff;
+    background-color: #ffffff;
+    border-color: #204d74;
+    }
+    .h3,h3{
+        font-size: 36px;
+    }
+
+    .input-group-addon{
+        background-color: #ffffff;
+    }
+
+    .font-color {
+        color: #ffffff;
+        font-size: larger;
+        font-family: 'Poppins', sans-serif;
+    }
+    p{
+        margin-bottom: 15px;
+    }
+    p a {
+        color: #ffffff;
+        text-decoration: underline;
+    }
+    .link{
+        color: white;
+        text-decoration: underline;
+    }
+
+    .error {
+        color: #ffbaba;
+        font-size: 1.5rem;
+        margin-bottom: 3%;
+    }
+
+    @media only screen and (max-width:1080px) {
+        .container {
+            width: 100%;
+        }
+
+        .maincont {
+            width: 100%;
+            padding: 100px 20px;
+        }
+        .cont1{
+            width:100%;
+        }
+        .cont1::before{
+            margin-left: 5%;
+            width: 90%;
+        }
+        .h3,
+        h3 {
+            font-size: 26px;
+        }
+        .font-color{
+            font-size: medium;
+        }
+
+    }
+
+</style>
+{% endblock %}
+
+
+{% block body %}
+<div class=" maincont ">
+    <div class="cont1">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class=" text-center" style="font-family: 'Carter One', cursive; color: white;">signup</h3>
+                <div class="" style="margin-top: 20%;">
+                    <form action="{% url 'signup' %}" method="POST"> {% csrf_token %}
+                        <div class="form-group">
+                            <label for="inputusername" ><h5 class="font-color"> Username : </h5> </label>
+                            <div class="input-group">
+                                <div class="input-group addon">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
+                                    <input type="text" name="username" class="form-control" id="inputusername" placeholder="type your name">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputemail" ><h5 class="font-color"> Email : </h5> </label>
+                            <div class="input-group">
+                                <div class="input-group addon">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-envelope"></i></span>
+                                    <input type="text" name="email" class="form-control" id="inputemail" placeholder="type your email">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputpassword" ><h5 class="font-color"> Password : </h5></label>
+                            <div class="input-group">
+                                <div class="input-group addon">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-lock"></i></span>
+                                    <input type="password" name="password1" class="form-control" id="inputpassword" placeholder="type your password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputconfirmpassword" ><h5 class="font-color">Confirm Password : </h5></label>
+                            <div class="input-group">
+                                <div class="input-group addon">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa  fa-check"></i></span>
+                                    <input type="password" name="password2" class="form-control" id="inputconfirmpassword" placeholder="confirm your password">
+                                </div>
+                            </div>
+                        </div>
+
+                        {% for message in messages %}
+
+                        <div class="error ">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+
+                        <div class="form-check" style="margin-bottom: 10px;">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+                            <label class="form-check-label font-color" for="exampleCheck1" style="font-size: inherit;"> I accept the
+                                <a href="" class="link">Terms of Use</a> & <a href="" class="link"> Privacy
+                                    Policy</a></label>
+                        </div>
+                        
+             
+                        <button type="submit" class="btn btn-primary">Sign up </button>
+                 
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+{% endblock %}

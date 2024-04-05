@@ -1,0 +1,25 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% block css %}
+<style>
+    .text {
+        text-align: center;
+        margin: 35vh 7px;
+    }
+
+    h3 a,
+    h3 a:hover {
+        font-size: inherit;
+        text-decoration: underline;
+        text-transform: capitalize;
+    }
+</style>
+{% endblock %}
+
+
+{% block body %}
+<div class="text">
+    <h3>{% block message %} An Activation Link has been sent to your email. Please confirm the link to complete the
+        registration. {% endblock %}</h3>
+</div>
+{% endblock %}

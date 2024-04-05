@@ -1,0 +1,84 @@
+{% load myfilter %}
+{% load static %}
+<!--packages start-->
+<section id="pack" class="packages">
+	<div class="container">
+		<div class="gallary-header text-center">
+			<h2>
+				special packages
+			</h2>
+			<p>
+				These are complete packages recommended by Tourist Experts, with the minimum expences.
+			</p>
+		</div>
+		<!--/.gallery-header-->
+		<div class="packages-content">
+			<div class="row">
+				{% for package in packages %}
+				<a href="packages/detail/{{package.uuid}}" style="display: block;">
+					<div class="col-md-4 col-sm-6 ">
+						<div class="single-package-item">
+							<img src="media/{{package.image}}" alt="package-place" style="height: 400px;">
+							<div class="single-package-item-txt">
+								<h3>{{package.from_place}} - {{package.to_place}}<span class="pull-right" >${{package.price}}</span></h3>
+								<div class="packages-para">
+									<p>
+										<span>
+											<i class="fa fa-angle-right"></i> {{package.no_of_days}} days {{package.no_of_nights}} nights
+										</span>
+										<i class="fa fa-angle-right"></i> {{package.accomodation}} star accomodation
+									</p>
+									<p >
+										<span>
+											<i class="fa fa-angle-right"></i>
+											{% for i in package.transportation %}
+											<span> {{i}} </span>
+											{% endfor %}
+										</span>
+
+										<span> <i class="fa fa-angle-right"></i> 
+											{% for i in package.food_facilities %}
+											<span> {{i}} </span>
+											{% endfor %}
+										</span>
+									</p>
+								</div>
+								<!--/.packages-para-->
+								<div class="packages-review">
+									<p>
+										{% for i in package.rating|times %}
+										<i class="fa fa-star"></i>
+										{% endfor %}
+
+
+										<span>{{package.reviews}} review</span>
+									</p>
+								</div>
+								<!--/.packages-review-->
+								<div class="about-btn">
+									<button class="about-view packages-btn">
+										book now
+									</button>
+								</div>
+								<!--/.about-btn-->
+							</div>
+							<!--/.single-package-item-txt-->
+						</div>
+						<!--/.single-package-item-->
+					</div>
+					<!--/.col-->
+				</a>
+				{% endfor %}
+
+
+
+			</div>
+			<!--/.row-->
+		</div>
+		<!--/.packages-content-->
+	</div>
+	<!--/.container-->
+
+</section>
+<!--/.packages-->
+<!--packages end-->
